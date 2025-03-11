@@ -1,10 +1,16 @@
-import { View, Text, StyleSheet, StatusBar } from "react-native";
+import { View, Text, StyleSheet, StatusBar, Image } from "react-native";
 import { FontAwesome, MaterialIcons, Ionicons } from "@expo/vector-icons";
 
 export default function Cv() {
   return (
     <View style={styles.container}>
-      {/* Header section */}
+      {/* Header section with profile image */}
+      <View style={styles.profileContainer}>
+        <Image
+          source={require("../assets/ngothuanphat.jpg")}
+          style={styles.profileImage}
+        />
+      </View>
       <Text style={styles.title}>Ngô Thuận Phát</Text>
       <Text style={styles.role}>Backend Developer</Text>
 
@@ -189,11 +195,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
   },
+  profileContainer: {
+    alignItems: "center",
+    marginTop: 30,
+    marginBottom: 15,
+  },
+  profileImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 2,
+    borderColor: "#555",
+  },
   title: {
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: 40,
+    marginTop: 10,
   },
   role: {
     fontSize: 18,
