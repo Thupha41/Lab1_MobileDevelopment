@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 // Initialize the Google Generative AI client
 const genAI = new GoogleGenerativeAI(
-  "AIzaSyCg9MNy_PjYQzH36j30f-hxap3SV0yKNUc"
+  ""
 );
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
