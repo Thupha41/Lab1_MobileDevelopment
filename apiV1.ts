@@ -1,3 +1,4 @@
+// Version 1
 import { GoogleGenerativeAI } from "@google/generative-ai";
 // Initialize the Google Generative AI client
 const genAI = new GoogleGenerativeAI(

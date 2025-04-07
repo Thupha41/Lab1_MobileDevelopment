@@ -13,16 +13,24 @@ export default function SentimentAnalyzer() {
   const [text, setText] = useState("");
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleAnalyze = async () => {
     if (!text.trim()) return;
 
     setLoading(true);
+    setError(null);
+
     try {
       const sentimentResult = await analyzeSentiment(text);
       setResult(sentimentResult);
     } catch (error) {
       console.error("Error:", error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "An error occurred during analysis"
+      );
     } finally {
       setLoading(false);
     }
@@ -30,11 +38,11 @@ export default function SentimentAnalyzer() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Sentiment Analysis</Text>
+      <Text style={styles.title}>Vietnamese Sentiment Analysis</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Enter text to analyze sentiment..."
+        placeholder="Nhập văn bản để phân tích cảm xúc..."
         value={text}
         onChangeText={setText}
         multiline
@@ -45,25 +53,45 @@ export default function SentimentAnalyzer() {
         onPress={handleAnalyze}
         disabled={loading}
       >
-        <Text style={styles.buttonText}>Submit</Text>
+        <Text style={styles.buttonText}>Phân tích</Text>
       </TouchableOpacity>
 
       {loading && (
         <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />
       )}
 
-      {result && !loading && (
+      {error && !loading && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      )}
+
+      {result && !loading && !error && (
         <View
           style={[styles.resultContainer, { backgroundColor: result.color }]}
         >
           <Text style={styles.emoji}>{result.emoji}</Text>
           <Text style={styles.resultText}>
-            Sentiment: {result.sentiment.toUpperCase()}
+            Cảm xúc: {translateSentiment(result.sentiment)}
           </Text>
         </View>
       )}
     </View>
   );
+}
+
+// Helper function to translate sentiment to Vietnamese
+function translateSentiment(sentiment: string): string {
+  switch (sentiment.toLowerCase()) {
+    case "positive":
+      return "TÍCH CỰC";
+    case "negative":
+      return "TIÊU CỰC";
+    case "neutral":
+      return "TRUNG TÍNH";
+    default:
+      return sentiment.toUpperCase();
+  }
 }
 
 const styles = StyleSheet.create({
@@ -117,6 +145,22 @@ const styles = StyleSheet.create({
   resultText: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "white",
+    marginBottom: 5,
+  },
+  errorContainer: {
+    width: "100%",
+    padding: 15,
+    backgroundColor: "#ffdddd",
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  errorText: {
+    color: "#d32f2f",
+    textAlign: "center",
+  },
+  scoreText: {
+    fontSize: 16,
     color: "white",
     marginBottom: 5,
   },

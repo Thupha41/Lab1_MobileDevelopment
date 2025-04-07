@@ -7,7 +7,7 @@ export default function App() {
   return (
     <ScrollView style={styles.scrollView}>
       <SentimentAnalyzer />
-      <Cv />
+      {/* <Cv /> */}
       <StatusBar style="auto" />
     </ScrollView>
   );
